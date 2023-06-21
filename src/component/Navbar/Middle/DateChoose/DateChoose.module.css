@@ -1,0 +1,14 @@
+.title {
+    height: 50px;
+    line-height: 80px;
+    color: #aaaaaf;
+}
+
+.content {
+    height: 50px;
+    border-color: #aaaaaf;
+    border-style: solid;
+    color: #2681ff;
+    border-width: 1px;
+    border-radius: 5px;
+}

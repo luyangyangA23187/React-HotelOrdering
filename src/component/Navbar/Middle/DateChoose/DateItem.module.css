@@ -1,0 +1,11 @@
+.box {
+    text-align: center;
+    line-height: 50px;
+    font-size: large;
+    cursor: pointer;
+}
+
+.Calendar {
+    width: 328px;
+    height: auto;
+}

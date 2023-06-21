@@ -1,0 +1,30 @@
+.box {
+    height: 800px;
+    width: 100%;
+    border-style: solid;
+    border-color: #eeef;
+    border-radius: 5px;
+}
+
+.padding {
+    width: 20%;
+    height: 100%;
+    float: left;
+}
+
+.content {
+    width: 60%;
+    height: 100%;
+    background-color: #eeef;
+    float: left;
+}
+
+.SelectMenu {
+    width: 100%;
+    height: 50px;
+}
+
+.list {
+    width: 60%;
+    margin-left: 2%;
+}

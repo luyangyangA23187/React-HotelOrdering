@@ -1,0 +1,38 @@
+.box {
+    background-color: white;
+    border-color: white;
+    border-style: solid;
+    border-radius: 10px;
+    width: 400px;
+    height: 400px;
+    margin: 50px auto;
+}
+
+.title {
+    margin-top: 10px;
+    text-align: center;
+    font-size: larger;
+}
+
+.email {
+    margin-top: 40px;
+    margin-left: 40px;
+}
+
+.password {
+    margin-top: 40px;
+    margin-left: 40px;
+    margin-right: 45px;
+}
+
+
+.loginButton {
+    display: inline-block;
+    margin-top: 50px;
+    margin-left: 170px;
+}
+
+.registerButton {
+    display: inline-block;
+    margin-left: 20px;
+}
