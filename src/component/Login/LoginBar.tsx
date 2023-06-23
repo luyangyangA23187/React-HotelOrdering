@@ -1,8 +1,11 @@
 import React from 'react'
 import style from './LoginBar.module.css'
 import { Button, Input, Space } from 'antd';
+import { useNavigate } from 'react-router-dom';
 
 const LoginBar = () => {
+  //用于跳转到注册页面
+  const navigate = useNavigate()
   return (
     <div className={style.box}>
       <div className={style.title}>
@@ -23,8 +26,8 @@ const LoginBar = () => {
         <div className={style.loginButton}>
           <Button size={'large'} type={'primary'}>登 录</Button>
         </div>
-        <div className={style.registerButton}>
-          <a href=""> 注册</a>
+        <div className={style.registerButton} onClick={()=>{navigate('/register')}}>
+           注册
         </div>
       </div>
     </div>

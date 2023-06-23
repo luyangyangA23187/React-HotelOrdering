@@ -3,6 +3,7 @@ import HotelList from '../views/HotelList'
 import { useRoutes,Navigate } from 'react-router-dom'
 import UserCenter from '../views/Login'
 import Login from '../views/Login'
+import Register from '../views/Register'
 
 interface Irouter{
     path:string,
@@ -18,6 +19,10 @@ const IndexRouter = () => {
         {
             path:'/login',
             element:<Login></Login>
+        },
+        {
+            path:'/register',
+            element:<Register></Register>
         },
         {
             path:'*',

@@ -15,3 +15,13 @@
     border-radius: 5px;
     cursor:pointer
 }
+
+.Dropdown ul{
+    max-height: 400px;
+    overflow: scroll;
+}
+
+.Dropdown ul ul{
+    max-height: 400px;
+    overflow: scroll;
+}

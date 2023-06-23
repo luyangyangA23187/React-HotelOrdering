@@ -18,6 +18,15 @@ class HotelListStore{
     //状态
     //城市列表
     cityList:Icity[]|undefined =[]
+    //当前城市
+    currentCity:Icity = {
+        id:110100,
+        levelType:2,
+        name:"北京市",
+        shortName:"北京",
+        city:"北京",
+        province:"北京"
+    }
     //入住日期
     date_0:Idate = {
         year:2023,
@@ -47,7 +56,6 @@ class HotelListStore{
         //没有则返回
         if(!list) return
         this.cityList = list
-        console.log(list)
     }
     //更改日期
     changeDate(index:number,date:Idate){
@@ -100,6 +108,15 @@ class HotelListStore{
         //儿童不能为负数
         if(num < 0) return
         this.childNum = num
+    }
+    //改变当前城市
+    changeCurrentCity(id:number){
+        this.cityList?.forEach((element)=>{
+            if(element.id == id){
+                this.currentCity = element
+                return
+            }
+        })
     }
 }
 

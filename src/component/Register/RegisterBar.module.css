@@ -1,0 +1,57 @@
+.box {
+    background-color: white;
+    border-color: white;
+    border-style: solid;
+    border-radius: 10px;
+    width: 400px;
+    height: 650px;
+    margin: 50px auto;
+}
+
+.name {
+    margin-top: 30px;
+    margin-left: 40px;
+    margin-right: 45px;
+}
+
+.personId {
+    margin-top: 30px;
+    margin-left: 40px;
+    margin-right: 45px;
+}
+
+.phoneNumber {
+    margin-top: 30px;
+    margin-left: 40px;
+    margin-right: 45px;
+}
+
+.gender {
+    margin-top: 30px;
+    margin-left: 40px;
+    margin-right: 45px;
+}
+
+.title {
+    margin-top: 10px;
+    text-align: center;
+    font-size: larger;
+}
+
+.email {
+    margin-top: 30px;
+    margin-left: 40px;
+}
+
+.password {
+    margin-top: 30px;
+    margin-left: 40px;
+    margin-right: 45px;
+}
+
+
+.registerButton {
+    display: inline-block;
+    margin-top: 50px;
+    margin-left: 170px;
+}

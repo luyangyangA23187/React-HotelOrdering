@@ -15,7 +15,7 @@ const NavbarRightRouter = () => {
             element:<CenterRight></CenterRight>
         },
         {
-          path:'/login',
+          path:'/*',
           element:<HomeButton></HomeButton>
         }
     ]

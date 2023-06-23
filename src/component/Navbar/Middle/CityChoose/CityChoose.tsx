@@ -18,19 +18,28 @@ const CityChoose:React.FC = () => {
         getCityList()
     })
 
+    //给城市列表分页
     const items = classification(hotelStore.cityList)
+
+    //下拉菜单点击事件
+    const onClick: MenuProps['onClick'] = ({ key }) => {
+        hotelStore.changeCurrentCity(parseInt(key))
+      };
 
   return (
     <div>
         <div className={style.title}>
             城市
         </div>
-        <Dropdown placement='bottomLeft' menu={{items}} arrow={false}>
+        <Dropdown placement='bottomLeft' menu={{items,onClick}} arrow={false} getPopupContainer={(element)=>{
+            element.className = element.className + ' '+ style.Dropdown
+            return element
+        }}>
             <div className={style.content}>
-                北京
+                {hotelStore.currentCity.shortName}
                 <DownOutlined></DownOutlined>
             </div>
-        </Dropdown>
+        </Dropdown> 
     </div>
   )
 }
@@ -59,13 +68,16 @@ function classification(list:Icity[]|undefined){
     list.forEach((city)=>{
         //市级城市
         if(city.levelType === 2){
-            cityMap.get(city.province)?.push({key:city.id,label:city.name})
+            cityMap.get(city.province)?.push({key:city.id,label:city.shortName})
         }
     })
-    
-    for(let key in cityMap.keys()){
-        items.push({key:provinceMap.get(key),label:key,type:'group',children:cityMap.get(key)})
-    }
+
+
+    cityMap.forEach((value,key)=>{
+        if(value.length){
+            items.push({key:provinceMap.get(key)!,label:key,children:value})
+        }
+    })
 
     return items
 }
