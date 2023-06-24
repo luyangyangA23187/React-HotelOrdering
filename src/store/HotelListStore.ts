@@ -1,13 +1,21 @@
 import React from 'react'
 import { makeAutoObservable,configure } from 'mobx'
 import { createContext } from 'react'
-import { Dayjs} from 'dayjs'
-import { Icity } from '../config/interface'
+import { Icity, Ihotel,Idistrict } from '../config/interface'
+import { getCityList, getDistrictList, getHotelList } from '../config/GetData'
 
 interface Idate{
     year:number,
     month:number,
     day:number,
+}
+
+//过滤器接口
+interface Ifilter{
+    //关键词
+    keyWords:string,
+    //区域ID
+    districtId:number,
 }
 
 class HotelListStore{
@@ -17,7 +25,11 @@ class HotelListStore{
     
     //状态
     //城市列表
-    cityList:Icity[]|undefined =[]
+    cityList:Icity[]|undefined = []
+    //区域列表
+    disstrictList:Idistrict[] = []
+    //酒店列表
+    hotelList:Ihotel[] = []
     //当前城市
     currentCity:Icity = {
         id:110100,
@@ -49,6 +61,11 @@ class HotelListStore{
     adultNum:number = 1;
     //入住儿童书数
     childNum:number = 0;
+    //酒店筛选条件
+    filter:Ifilter = {
+        districtId:0,
+        keyWords:'',
+    }
 
     //方法
     //更改城市列表
@@ -56,6 +73,27 @@ class HotelListStore{
         //没有则返回
         if(!list) return
         this.cityList = list
+    }
+    //改变区域列表
+    changeDistrictList(list:Idistrict[]|null){
+        //没有则返还
+        if(!list) return
+        this.disstrictList = list
+    }
+    //改变当前区域
+    changeCurrentDistrictId(id:number){
+        console.log(id,this.filter.districtId)
+        if(id == this.filter.districtId){
+            this.filter.districtId = 0
+            return
+        }
+        this.filter.districtId = id
+    }
+    //改变酒店列表
+    changeHotelList(list:Ihotel[]|null){
+        //没有则返回
+        if(!list) return
+        this.hotelList = list
     }
     //更改日期
     changeDate(index:number,date:Idate){
@@ -111,12 +149,23 @@ class HotelListStore{
     }
     //改变当前城市
     changeCurrentCity(id:number){
+        //如果等于当前城市则不用修改
+        if(id === this.currentCity.id) return
         this.cityList?.forEach((element)=>{
             if(element.id == id){
                 this.currentCity = element
+                //修改当前城市后需要重新请求酒店和区域
+                getDistrictList(id)
+                getHotelList(id)
                 return
             }
         })
+    }
+
+    //改变搜索关键词
+    changeFilterKeyWords(keyWords:string){
+        if(keyWords == this.filter.keyWords) return
+        this.filter.keyWords = keyWords
     }
 }
 

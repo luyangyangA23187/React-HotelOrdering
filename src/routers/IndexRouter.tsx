@@ -8,13 +8,18 @@ import Register from '../views/Register'
 interface Irouter{
     path:string,
     element:JSX.Element
+    children?:Irouter[]
 }
 
 const IndexRouter = () => {
     const routerArray:Irouter[] = [
         {
             path:'/hotels',
-            element:<HotelList></HotelList>
+            element:<HotelList></HotelList>,
+        },
+        {
+            path:'/hotels/details/:id',
+            element:(<div>details</div>)
         },
         {
             path:'/login',

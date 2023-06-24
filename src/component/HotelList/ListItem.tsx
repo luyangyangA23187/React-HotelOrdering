@@ -1,21 +1,30 @@
-import React from 'react'
+import React, { ReactNode } from 'react'
 import style from './ListItem.module.css'
 import { Row,Col,Button } from 'antd'
+import { Ihotel } from '../../config/interface'
+import { useNavigate } from 'react-router-dom'
 
-const ListItem = () => {
+interface Iprops{
+    hotel:Ihotel
+    key:number|string
+}
+
+const ListItem:React.FC<Iprops> = (props) => {
+    const navigate = useNavigate()
+
   return (
-    <div className={style.box}>
+    <div className={style.box} key={props.hotel.id}>
         <Row gutter={8}>
             <Col span={8}>
             <div className={style.common}>
-                图片
+                <img src={props.hotel.picture} alt="" />
             </div>
             </Col>
             <Col span={10}>
             <div className={style.common}>
-                <div className={style.hotelName}>小朴小住·设计师酒店</div>
-                <div className={style.district}>双流区</div>
-                <div className={style.address}>双流区航空港街道川大路二段二号四川大学江安校区</div>
+                <div className={style.hotelName}>{props.hotel.name}</div>
+                <div className={style.district}>{props.hotel.city.name}</div>
+                <div className={style.address}>{props.hotel.address}</div>
             </div>
             </Col>
             <Col span={6}>
@@ -24,9 +33,10 @@ const ListItem = () => {
                     <span style={{
                         "color":"#2681ff",
                         "fontSize":"40px"
-                }}>299</span>起</div>
+                }}>{props.hotel.minPrice}</span>起</div>
                 <div className={style.button}>
-                    <Button type={'primary'} size={'large'}>查看详情</Button>
+                    <Button type={'primary'} size={'large'}  onClick={
+                        ()=>{navigate(`/hotels/details/${props.hotel.id}`)}}>查看详情</Button>
                 </div>
             </div>
             </Col>

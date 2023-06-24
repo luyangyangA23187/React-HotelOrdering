@@ -1,13 +1,23 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import style from './DateChoose.module.css'
 import { Row,Col } from 'antd'
 import DateItem from './DateItem'
 import { Store } from '../../../../store/StoreProvider'
 import { observer } from 'mobx-react';
+import dayjs from 'dayjs'
 
 const DateChoose:React.FC = () => {
 
   const {hotelStore} = useContext(Store)
+
+  useEffect(()=>{
+    //获取当天日期
+    let dayJs = dayjs()
+    hotelStore.changeDate(0,{year:dayJs.year(),month:dayJs.month()+1,day:dayJs.date()})
+    //获取次日日期
+    dayJs = dayjs().add(1,'day')
+    hotelStore.changeDate(1,{year:dayJs.year(),month:dayJs.month()+1,day:dayJs.date()})
+  },[])
 
   return (
     <div>

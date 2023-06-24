@@ -16,13 +16,14 @@ const CityChoose:React.FC = () => {
 
     useEffect(()=>{
         getCityList()
-    })
+    },[])
 
     //给城市列表分页
     const items = classification(hotelStore.cityList)
 
     //下拉菜单点击事件
     const onClick: MenuProps['onClick'] = ({ key }) => {
+        //改变当前城市
         hotelStore.changeCurrentCity(parseInt(key))
       };
 
