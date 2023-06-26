@@ -1,0 +1,43 @@
+.image {
+    height: 330px;
+    margin-top: 10px;
+    margin-left: 15px;
+}
+
+.middleContent {
+    height: 330px;
+    margin-top: 10px;
+    margin-left: 15px;
+}
+
+.rightContent {
+    height: 330px;
+    margin-top: 10px;
+    margin-left: 15px;
+    margin-right: 15px;
+    text-align: center;
+}
+
+.minPrice {
+    margin-top: 150px;
+}
+
+.hotelName {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.district {
+    margin-top: 5px;
+    font-size: medium;
+}
+
+.address {
+    margin-top: 5px;
+    font-size: medium;
+}
+
+.description {
+    margin-top: 5px;
+    font-size: medium;
+}

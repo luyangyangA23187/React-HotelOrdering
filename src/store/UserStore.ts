@@ -1,13 +1,6 @@
 import { makeAutoObservable,configure } from 'mobx'
 import { createContext } from 'react'
-
-interface IregisterInfo{
-    name:string,
-    email:string,
-    phone:string,
-    sexual:string,
-    uid:string,
-}
+import { IregisterInfo } from '../config/interface'
 
 class UserStore{
     constructor(){

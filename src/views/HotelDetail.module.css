@@ -1,0 +1,38 @@
+.box {
+    min-height: 800px;
+    width: 100%;
+    border-style: solid;
+    border-bottom: none;
+    border-color: #eeef;
+    border-radius: 5px;
+}
+
+.padding {
+    width: 20%;
+    min-height: 800px;
+    float: left;
+}
+
+.content {
+    width: 60%;
+    min-height: 800px;
+    background-color: #eeef;
+    float: left;
+}
+
+.detailCard {
+    background-color: white;
+    width: 90%;
+    height: 350px;
+    margin: 5px auto;
+    padding: 5px;
+    border-style: solid;
+    border-color: white;
+    border-radius: 10px;
+}
+
+.roomContent {
+    width: 91%;
+    height: auto;
+    margin: 5px auto;
+}

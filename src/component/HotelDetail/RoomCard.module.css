@@ -1,0 +1,41 @@
+.box {
+    height: 300px;
+    border-style: solid;
+    border-color: #eeef;
+    background-color: white;
+}
+
+.breakfast {
+    height: 97px;
+    border-left-width: 3px;
+    border-bottom-width: 1px;
+    border-style: solid;
+    border-color: #eeef;
+}
+
+.breakfastContent {
+    height: 50px;
+    margin-top: 25px;
+    text-align: center;
+    line-height: 50px;
+}
+
+.roomType {
+    border-top-style: solid;
+    border-color: #eeef;
+    height: 300px;
+    text-align: center;
+}
+
+.roomTypeName {
+    margin-top: 50px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.roomPicture {
+    margin-top: 5px;
+    margin-left: 5%;
+    width: 90%;
+    height: 160px;
+}

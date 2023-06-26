@@ -1,7 +1,7 @@
 import React from 'react'
 import { makeAutoObservable,configure } from 'mobx'
 import { createContext } from 'react'
-import { Icity, Ihotel,Idistrict } from '../config/interface'
+import { Icity, Ihotel,Idistrict,Iroom } from '../config/interface'
 import { getCityList, getDistrictList, getHotelList } from '../config/GetData'
 
 interface Idate{
@@ -30,6 +30,10 @@ class HotelListStore{
     disstrictList:Idistrict[] = []
     //酒店列表
     hotelList:Ihotel[] = []
+    //当前酒店
+    currentHotelId:number = 0
+    //房间列表
+    roomList:Iroom[] = []
     //当前城市
     currentCity:Icity = {
         id:110100,
@@ -94,6 +98,15 @@ class HotelListStore{
         //没有则返回
         if(!list) return
         this.hotelList = list
+    }
+    //改变当前酒店
+    changeCurrentHotelId(id:number){
+        if(id == this.currentHotelId) return
+        this.currentHotelId = id
+    }
+    //改变房间列表
+    changeRoomList(list:Iroom[]){
+        this.roomList = list
     }
     //更改日期
     changeDate(index:number,date:Idate){
@@ -166,6 +179,17 @@ class HotelListStore{
     changeFilterKeyWords(keyWords:string){
         if(keyWords == this.filter.keyWords) return
         this.filter.keyWords = keyWords
+    }
+
+    //通过酒店id获得酒店
+    getHotelById(id:number):Ihotel{
+        let result:Ihotel = this.hotelList[0]
+        this.hotelList.forEach((hotel)=>{
+            if(id === hotel.id){
+                result = hotel
+            }
+        })
+        return result
     }
 }
 

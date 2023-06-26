@@ -3,6 +3,8 @@ import style from './RegisterBar.module.css'
 import { Button, Input, Space, Radio } from 'antd';
 import type { RadioChangeEvent } from 'antd';
 import { Store } from '../../store/StoreProvider';
+import { postRegister } from '../../config/GetData';
+import { IregisterInfo } from '../../config/interface';
 
 const RegisterBar = () => {
 
@@ -48,12 +50,39 @@ const RegisterBar = () => {
       <div>
         <div className={style.registerButton}>
           <Button size={'large'} type={'primary'} onClick={()=>{
-            console.log(userStore.registerInfo)
+            if(checkRegisterInfo(userStore.registerInfo)){
+              postRegister(userStore.registerInfo)
+            }
           }}>注 册</Button>
         </div>
       </div>
     </div>
   )
+}
+
+//检查注册信息是否合法并发送
+function checkRegisterInfo(info:IregisterInfo):boolean{
+  if(!info.name){
+    alert('姓名为空')
+    return false
+  }
+  if(!info.uid){
+    alert('未输入身份证号')
+    return false
+  }
+  if(!info.phone){
+    alert('手机号为空')
+    return false
+  }
+  if(!info.sexual){
+    alert('未选择性别')
+    return false
+  }
+  if(!info.email){
+    alert('邮箱为空')
+    return false
+  }
+  return true
 }
 
 export default RegisterBar
