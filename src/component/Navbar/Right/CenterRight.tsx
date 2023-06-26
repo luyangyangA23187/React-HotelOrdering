@@ -1,6 +1,8 @@
 import React, { ReactNode, useContext } from 'react'
 import { Store } from '../../../store/StoreProvider'
 import LoginButton from './LoginButton'
+import UserButton from './UserButton'
+import { observer } from 'mobx-react'
 
 const CenterRight = () => {
 
@@ -9,7 +11,11 @@ const CenterRight = () => {
 
     //是否登录
     if(userStore.isLogin){
-        
+        return (
+            <div>
+                <UserButton></UserButton>
+            </div>
+        )
     }
 
     return (
@@ -19,4 +25,4 @@ const CenterRight = () => {
     )
 }
 
-export default CenterRight
+export default observer(CenterRight)

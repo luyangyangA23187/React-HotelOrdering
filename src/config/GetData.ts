@@ -1,7 +1,10 @@
-import { IregisterInfo } from "./interface"
+import { Ilogin, IregisterInfo } from "./interface"
 import axios from "axios"
 import hotelStore from "../store/HotelListStore"
-export {getCityList,getHotelList,getDistrictList,getHotelDetailById,postRegister}
+import userStore from "../store/UserStore"
+import { useNavigate } from "react-router-dom"
+export {getCityList,getHotelList,getDistrictList,getHotelDetailById,postRegister,
+getEmailCode,checkLogin}
 
 
 //请求城市列表
@@ -53,4 +56,31 @@ function postRegister(info:IregisterInfo){
                 break
         }
     }).catch(err=>console.log(err))
+}
+
+//发送验证码
+function getEmailCode(email:string){
+    axios.get(`/api/login/sendEmail?emailAddress=${email}`).then((res)=>{
+        switch(res.data){
+            case 0:
+                alert('邮箱未注册')
+                break
+            case 1:
+                alert('发送成功')
+        }
+    }).catch(err=>console.log(err))
+}
+
+//登录验证
+function checkLogin(emailAddress:string,code:string){
+    return new Promise((resolve,reject)=>{
+        axios.post('/api/login/checkEmailCode',{emailAddress,code}).then((res)=>{
+            if(!res.data.data){
+                reject()
+            }
+            //改变id
+            userStore.changeUserId(res.data.data)
+            resolve(res.data.data)
+        }).catch(err=>console.log(err))
+    })
 }

@@ -1,4 +1,4 @@
-export type {Icity,Ihotel,Idistrict,IregisterInfo,Iroom}
+export type {Icity,Ihotel,Idistrict,IregisterInfo,Iroom,Iorder,Ilogin,IuserInfo}
 
 //城市信息
 interface Icity{
@@ -50,4 +50,26 @@ interface IregisterInfo{
     phone:string,
     sexual:string,
     uid:string,
+}
+
+//用户登录信息
+interface Ilogin{
+    emailAddress:string,
+    code:string,
+}
+
+//用户信息
+interface IuserInfo{
+    useId:number
+}
+
+//订单信息
+interface Iorder{
+    id?:number,
+    rooId:number,
+    useId:number,
+    breId:number,
+    price:number,
+    checkin:string,
+    checkout:string,
 }
