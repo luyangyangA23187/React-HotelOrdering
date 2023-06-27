@@ -1,32 +1,60 @@
 import React, { useContext, useEffect, useId } from 'react'
 import { Store } from '../store/StoreProvider'
 import { observer } from 'mobx-react'
-import { Iorder } from '../config/interface'
+import { Ibreakfast, Ihotel, Iorder, Iroom, IuserInfo } from '../config/interface'
 import { useParams } from 'react-router-dom'
 import dayjs from 'dayjs'
+import OrderBar from '../component/Order/OrderBar'
+import { Button } from 'antd'
 
 
 const Order = () => {
 
   const params = useParams()
 
+
   //汇总一下订单信息
   const {userStore,hotelStore} = useContext(Store)
+  const userinfo:IuserInfo = userStore.userInfo
+  const hotel:Ihotel = hotelStore.getHotelById(parseInt(params.id!))
+  const room:Iroom = hotelStore.getRoomById(parseInt(params.rooId!))
+  const breakfast:Ibreakfast = hotelStore.getBreakfastById(parseInt(params.breId!))
 
 
   let orderItem:Iorder = {
-    rooId:parseInt(params.rooId!),
-    useId:1,
-    breId:1,
-    price:1,
-    checkin:'1',
-    checkout:'2',
+    rooId:room.id,
+    useId:parseInt(sessionStorage.getItem('useId')!),
+    breId:breakfast.id,
+    checkin:hotelStore.getTime(0),
+    checkout:hotelStore.getTime(1),
+    price:(room.price + breakfast.price),
   }
 
+  orderItem.price = parseFloat(Number(orderItem.price*(dayjs(orderItem.checkout).
+  diff(orderItem.checkin,'day'))).toFixed(2))
+  const totalPrice:number = orderItem.price * hotelStore.roomNum
 
   return (
-    <div>Order</div>
+    <div>
+      <OrderBar info={{
+        hotelName:hotel.name,
+        roomName:room.type,
+        roomNum:hotelStore.roomNum,
+        breakfast:breakfast.type,
+        checkIn:orderItem.checkin,
+        checkOut:orderItem.checkout,
+        price:orderItem.price,
+        userName:userinfo.name,
+        phone:userinfo.phone
+        }}></OrderBar>
+        <div style={{'fontSize':'large','textAlign':'center'}}>
+          总价:{totalPrice}
+        </div>
+        <div style={{'textAlign':'center','marginTop':'20px'}}>
+          <Button size={'large'} type={'primary'}>支付</Button>
+        </div>
+    </div>
   )
 }
 
-export default observer(Order)
+export default Order

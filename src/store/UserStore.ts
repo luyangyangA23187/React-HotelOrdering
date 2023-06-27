@@ -27,7 +27,12 @@ class UserStore{
 
     //用户信息
     userInfo:IuserInfo = {
-        useId:0
+        useId:0,
+        email:'',
+        name:'',
+        phone:'',
+        sexual:'',
+        uid:'',
     }
 
     //改变注册信息-姓名
@@ -64,10 +69,19 @@ class UserStore{
         this.userInfo.useId = id
         sessionStorage.setItem('useId',id+'')
     }
+    //改变用户信息
+    changeUserInfo(userInfo:IuserInfo){
+        this.userInfo = userInfo
+    }
     //退出登录
     exitLogin(){
+        //登录状态为假
         this.isLogin = false
+        //清空session
         sessionStorage.removeItem('useId')
+        //清空登录信息
+        this.loginInfo.emailAddress = ''
+        this.loginInfo.code = ''
     }
 }
 

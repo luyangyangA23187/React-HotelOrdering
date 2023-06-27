@@ -8,6 +8,7 @@ import HotelDetail from '../views/HotelDetail'
 import Order from '../views/Order'
 import userStore from '../store/UserStore'
 import { message } from 'antd'
+import UserInfo from '../views/UserInfo'
 
 interface Irouter{
     path:string,
@@ -27,7 +28,7 @@ const IndexRouter = () => {
             element:<HotelDetail></HotelDetail>//酒店详情
         },
         {
-            path:'/hotels/details/:id/:rooId/order',
+            path:'/hotels/details/:id/:rooId/:breId/order',
             element:<Auth><Order></Order></Auth>
         },
         {
@@ -37,6 +38,10 @@ const IndexRouter = () => {
         {
             path:'/register',
             element:<Register></Register>//注册页面
+        },
+        {
+            path:'/center/userinfo',
+            element:<UserInfo></UserInfo>
         },
         {
             path:'*',

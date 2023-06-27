@@ -3,8 +3,9 @@ import axios from "axios"
 import hotelStore from "../store/HotelListStore"
 import userStore from "../store/UserStore"
 import { useNavigate } from "react-router-dom"
+import { userInfo } from "os"
 export {getCityList,getHotelList,getDistrictList,getHotelDetailById,postRegister,
-getEmailCode,checkLogin}
+getEmailCode,checkLogin,getUserInfo}
 
 
 //请求城市列表
@@ -35,9 +36,13 @@ function getDistrictList(cityId:number):void{
 
 //根据酒店ID请求酒店详细信息
 function getHotelDetailById(hotelId:number):void{
-    //发送请求
+    //发送房间请求
     axios.get(`/api/room/getRoom?hotelId=${hotelId}`).then((res)=>{
         hotelStore.changeRoomList(res.data.data)
+    }).catch(err=>console.log(err))
+    //发送早餐请求
+    axios.get(`/api/breakfast/getBreakfast?hotId=${hotelId}`).then((res)=>{
+        hotelStore.changeBreakfastList(res.data.data)
     }).catch(err=>console.log(err))
 }
 
@@ -78,9 +83,26 @@ function checkLogin(emailAddress:string,code:string){
             if(!res.data.data){
                 reject()
             }
+            const id:number = res.data.data
             //改变id
-            userStore.changeUserId(res.data.data)
+            userStore.changeUserId(id)
+            //得到用户信息
+            getUserInfo()
             resolve(res.data.data)
         }).catch(err=>console.log(err))
     })
+}
+
+//根据id得到用户信息
+function getUserInfo(){
+    const id:number = userStore.userInfo.useId
+    //如果用户id为空则不发送
+    if(!id){
+        alert('尚未登录')
+        return
+    }
+    //发送请求
+    axios.post('/api/user/getUser',{id:id}).then((res)=>{
+        userStore.changeUserInfo({...res.data.data,useId:id})
+    }).catch(err=>console.log(err))
 }

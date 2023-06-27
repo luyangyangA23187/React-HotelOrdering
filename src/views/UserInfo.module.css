@@ -1,0 +1,29 @@
+.box {
+    background-color: white;
+    border-color: #2681ff;
+    border-style: solid;
+    border-radius: 10px;
+    width: 400px;
+    height: 400px;
+    margin: 50px auto;
+}
+
+.title {
+    width: 100%;
+    margin-top: 5px;
+    text-align: center;
+    font-size: larger;
+}
+
+.contentBar {
+    width: 80%;
+    margin: 20px auto;
+    padding-left: 5px;
+    padding-right: 5px;
+    font-size: large;
+}
+
+.button {
+    width: 25%;
+    margin: 40px auto;
+}

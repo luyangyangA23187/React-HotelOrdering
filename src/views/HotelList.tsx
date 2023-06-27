@@ -42,6 +42,9 @@ const HotelList:React.FC = () => {
                 ).map((hotel)=>
                   <ListItem hotel={hotel} key={hotel.id}></ListItem>
                 )}
+                <div>
+                  
+                </div>
             </div>
         </div>
         <div className={style.padding}></div>

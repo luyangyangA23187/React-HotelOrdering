@@ -3,19 +3,24 @@ import { Button,Dropdown,message } from 'antd'
 import type { MenuProps } from 'antd';
 import { UserOutlined } from '@ant-design/icons'
 import userStore from '../../../store/UserStore';
+import { useNavigate } from 'react-router-dom';
 
 const UserButton = () => {
 
-    const handleMenuClick: MenuProps['onClick'] = (e) => {
-        switch(e.key){
-            case '1':
-                break;
-            case '2':
-                break;
-            case '3':
-                userStore.exitLogin()
-        }
-      };
+
+  const navigate = useNavigate()
+
+  const handleMenuClick: MenuProps['onClick'] = (e) => {
+      switch(e.key){
+        case '1':
+          navigate('/center/userinfo')
+          break;
+        case '2':
+          break;
+        case '3':
+          userStore.exitLogin()
+      }
+    };
 
       const items: MenuProps['items'] = [
         {

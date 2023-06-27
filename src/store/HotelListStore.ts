@@ -1,8 +1,9 @@
 import React from 'react'
 import { makeAutoObservable,configure } from 'mobx'
 import { createContext } from 'react'
-import { Icity, Ihotel,Idistrict,Iroom } from '../config/interface'
+import { Icity, Ihotel,Idistrict,Iroom, Ibreakfast } from '../config/interface'
 import { getCityList, getDistrictList, getHotelList } from '../config/GetData'
+import dayjs from 'dayjs'
 
 interface Idate{
     year:number,
@@ -34,6 +35,8 @@ class HotelListStore{
     currentHotelId:number = 0
     //房间列表
     roomList:Iroom[] = []
+    //早餐列表
+    breakfastList:Ibreakfast[] = []
     //当前城市
     currentCity:Icity = {
         id:110100,
@@ -108,6 +111,11 @@ class HotelListStore{
     changeRoomList(list:Iroom[]){
         this.roomList = list
     }
+    //改变早餐列表
+    changeBreakfastList(list:Ibreakfast[]){
+        this.breakfastList = list
+    }
+
     //更改日期
     changeDate(index:number,date:Idate){
         switch(index){
@@ -190,6 +198,33 @@ class HotelListStore{
             }
         })
         return result
+    }
+    //通过房间id得到房间
+    getRoomById(id:number):Iroom{
+        let result:Iroom = this.roomList[0]
+        this.roomList.forEach((room)=>{
+            if(id === room.id){
+                result = room
+            }
+        })
+        return result
+    }
+    //通过早餐id得到早餐
+    getBreakfastById(id:number):Ibreakfast{
+        let result:Ibreakfast = this.breakfastList[0]
+        this.breakfastList.forEach((bre)=>{
+            if(id === bre.id){
+                result = bre
+            }
+        })
+        return result
+    }
+    //获取时间
+    getTime(index:number):string{
+        if(index){
+            return `${this.date_1.year}-${this.date_1.month}-${this.date_1.day}`
+        }
+        return  `${this.date_0.year}-${this.date_0.month}-${this.date_0.day}`
     }
 }
 
