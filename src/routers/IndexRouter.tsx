@@ -41,7 +41,7 @@ const IndexRouter = () => {
         },
         {
             path:'/center/userinfo',
-            element:<UserInfo></UserInfo>
+            element:<Auth><UserInfo></UserInfo></Auth>
         },
         {
             path:'*',

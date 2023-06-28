@@ -5,7 +5,7 @@ import userStore from "../store/UserStore"
 import { useNavigate } from "react-router-dom"
 import { userInfo } from "os"
 export {getCityList,getHotelList,getDistrictList,getHotelDetailById,postRegister,
-getEmailCode,checkLogin,getUserInfo}
+getEmailCode,checkLogin,getUserInfo,changeUserInfo}
 
 
 //请求城市列表
@@ -104,5 +104,19 @@ function getUserInfo(){
     //发送请求
     axios.post('/api/user/getUser',{id:id}).then((res)=>{
         userStore.changeUserInfo({...res.data.data,useId:id})
+    }).catch(err=>console.log(err))
+}
+
+//更改用户信息
+function changeUserInfo(name:string,phone:string){
+    if(!name){
+        alert('姓名不能为空')
+    }
+    if(!phone){
+        alert('电话不能为空')
+    }
+    axios.post('/api/user/updateUser',{id:userStore.userInfo.useId,name:name,phone:phone}).then((res)=>{
+        userStore.changeUserInfo({...res.data.data,useId:userStore.userInfo.useId})
+        alert('更改成功')
     }).catch(err=>console.log(err))
 }

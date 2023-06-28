@@ -29,7 +29,7 @@ interface Ihotel{
     address:string,
     minPrice:number,
     picture:string,
-    longtitude:string,
+    longitude:string,
     latitude:string,
     city:Idistrict,
     description:string

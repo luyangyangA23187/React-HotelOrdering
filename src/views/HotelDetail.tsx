@@ -1,12 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react'
 import style from './HotelDetail.module.css'
 import HotelDetailCard from '../component/HotelDetail/HotelDetailCard'
-import RoomCard from '../component/HotelDetail/RoomCard'
 import { useParams } from 'react-router-dom'
 import { Store } from '../store/StoreProvider'
 import { Ihotel } from '../config/interface'
 import { getHotelDetailById } from '../config/GetData'
-import { observer } from 'mobx-react'
 import RoomList from '../component/HotelDetail/RoomList'
 
 const HotelDetail = () => {

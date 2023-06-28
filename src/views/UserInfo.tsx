@@ -3,7 +3,7 @@ import { IuserInfo } from '../config/interface'
 import { Store } from '../store/StoreProvider'
 import style from './UserInfo.module.css'
 import { Button, Input } from 'antd'
-import { getUserInfo } from '../config/GetData'
+import { changeUserInfo, getUserInfo } from '../config/GetData'
 import { observer } from 'mobx-react'
 
 const UserInfo = () => {
@@ -48,7 +48,8 @@ const UserInfo = () => {
             邮箱:{info.email}
         </div>
         <div className={style.button}>
-            <Button size={'large'} type={'primary'}>确认更改</Button>
+            <Button size={'large'} type={'primary'} 
+            onClick={()=>changeUserInfo(name,phone)}>确认更改</Button>
         </div>
     </div>
   )
