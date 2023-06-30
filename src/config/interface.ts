@@ -81,9 +81,11 @@ interface IuserInfo{
 interface Iorder{
     id?:number,
     rooId:number,
+    roomNum:number,
     useId:number,
     breId:number,
     price:number,
     checkin:string,
     checkout:string,
+    preserveNum?:number,
 }

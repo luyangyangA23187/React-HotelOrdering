@@ -1,32 +1,54 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import style from './RoomCard.module.css'
 import {Row, Col, Button} from 'antd'
 import { Ibreakfast, Iroom } from '../../config/interface'
 import { useNavigate } from 'react-router-dom'
 import { Store } from '../../store/StoreProvider'
 import { observer } from 'mobx-react'
+import { getRoomRestNum } from '../../config/GetData'
 
-const RoomCard:React.FC<{room:Iroom}> = (props) => {
+const RoomCard:React.FC<{room:Iroom,breakfastList:Ibreakfast[]}> = (props) => {
 
     const navigate = useNavigate()
-    
+
     const {hotelStore} = useContext(Store)
+    const reserveNum = hotelStore.reserveNum
+    
+    //房间剩余量
+    const [roomNum,setRoomNum] = useState<number>(-1)
 
-    const breakfastList:Ibreakfast[] = hotelStore.breakfastList
+    useEffect(()=>{
+        getRoomRestNum(props.room.id,reserveNum).then((num)=>{
+            if(typeof(num)=='number'){
+                setRoomNum(num)
+            }
+        })
+    },[reserveNum])
+    
 
+    //早餐列表
+    const breakfastList:Ibreakfast[] = props.breakfastList
+
+    //验证有无早餐
     function hasBreakFast(index:number):boolean{
-        if(hotelStore.breakfastList.length > index){
+        if(breakfastList.length > index){
             return true
         }
         return false
     }
 
+    //验证是否可以预订
+    function canReserve(index:number):boolean{
+        if(roomNum<=0) return false
+        return hasBreakFast(index)
+    }
+
+    //得到价格
     function getPrice(price:number,index:number):number{
         if(!price) return 0
         if(hasBreakFast(index)){
             return price + breakfastList[index].price
         }
-
         return price
     }
 
@@ -42,6 +64,9 @@ const RoomCard:React.FC<{room:Iroom}> = (props) => {
                         <img src={props.room.picture} alt="" 
                         style={{'height':'160px','width':'100%'}}/>
                     </div>
+                    <div>
+                        剩余:{roomNum}
+                    </div>
                 </div>
             </Col>
             <Col span={18}>
@@ -55,10 +80,11 @@ const RoomCard:React.FC<{room:Iroom}> = (props) => {
                                     <div style={{'fontSize':'20px'}}>
                                         <span>{props.room.price} </span>
                                         <Button type={'primary'} onClick={()=>{
-                                            if(hasBreakFast(0)){
+                                            if(canReserve(0)){
                                             navigate(`./${props.room.id}/${breakfastList[0].id}/order`)
                                             }
-                                        }}>
+                                        }}
+                                        disabled={!canReserve(0)}>
                                             预 订
                                         </Button>
                                     </div>
@@ -76,11 +102,11 @@ const RoomCard:React.FC<{room:Iroom}> = (props) => {
                                         <span>{getPrice(props.room.price,1)} </span>
                                         <Button type={'primary'} 
                                         onClick={()=>{
-                                            if(hasBreakFast(1)){
+                                            if(canReserve(1)){
                                             navigate(`./${props.room.id}/${breakfastList[1].id}/order`)
                                             }
                                         }}
-                                        disabled={!hasBreakFast(1)}>
+                                        disabled={!canReserve(1)}>
                                             预 订
                                         </Button>
                                     </div>
@@ -98,11 +124,11 @@ const RoomCard:React.FC<{room:Iroom}> = (props) => {
                                         <span>{getPrice(props.room.price,2)} </span>
                                         <Button type={'primary'} 
                                         onClick={()=>{
-                                            if(hasBreakFast(2)){
+                                            if(canReserve(2)){
                                             navigate(`./${props.room.id}/${breakfastList[2].id}/order`)
                                             }
                                         }}
-                                        disabled={!hasBreakFast(2)}>
+                                        disabled={!canReserve(2)}>
                                             预 订
                                         </Button>
                                     </div>
@@ -117,4 +143,4 @@ const RoomCard:React.FC<{room:Iroom}> = (props) => {
   )
 }
 
-export default RoomCard
+export default observer(RoomCard)
