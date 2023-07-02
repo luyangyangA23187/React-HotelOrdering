@@ -38,15 +38,15 @@ const DateItem: React.FC<Iprops> = (props) => {
               hotelStore.calendarShow(0, false)
               hotelStore.calendarShow(1, false)
 
-              //如果入住日期大于离店日期则不能修改
+              //如果入住日期大于离店日期或相差一个月则不能修改
               switch (props.index) {
                 case 0:
-                  if (date.diff(hotelStore.getTime(1)) >= 0) {
+                  if (date.diff(hotelStore.getTime(1)) >= 0||date.diff(hotelStore.getTime(1),'day')<-30) {
                     return
                   }
                   break
                 case 1:
-                  if (date.diff(hotelStore.getTime(0)) <= 0) {
+                  if (date.diff(hotelStore.getTime(0)) <= 0||date.diff(hotelStore.getTime(0),'day')>30) {
                     return
                   }
                   break
