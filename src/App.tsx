@@ -6,9 +6,12 @@ import {HashRouter} from 'react-router-dom'
 import zhCN from 'antd/locale/zh_CN'
 import { ConfigProvider } from 'antd';
 import StoreProvider from './store/StoreProvider';
+import userStore from './store/UserStore';
+
 
 function App() {
 
+  userStore.checkLogin()
 
   return (
     <div>

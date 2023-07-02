@@ -5,6 +5,7 @@ import type { RadioChangeEvent } from 'antd';
 import { Store } from '../../store/StoreProvider';
 import { postRegister } from '../../config/GetData';
 import { IregisterInfo } from '../../config/interface';
+import { useNavigate } from 'react-router-dom';
 
 const RegisterBar = () => {
 
@@ -14,6 +15,8 @@ const RegisterBar = () => {
   }
   //得到用户注册信息状态
   const {userStore} = useContext(Store)
+  //跳转
+  const navigate = useNavigate()
 
   return (
     <div className={style.box}>
@@ -51,7 +54,7 @@ const RegisterBar = () => {
         <div className={style.registerButton}>
           <Button size={'large'} type={'primary'} onClick={()=>{
             if(checkRegisterInfo(userStore.registerInfo)){
-              postRegister(userStore.registerInfo)
+              postRegister(userStore.registerInfo).then(res=>{navigate('/hotels')})
             }
           }}>注 册</Button>
         </div>

@@ -1,13 +1,11 @@
-import { Ilogin, Iorder, IregisterInfo } from "./interface"
+import { Iorder, IregisterInfo } from "./interface"
 import axios from "axios"
 import hotelStore from "../store/HotelListStore"
 import userStore from "../store/UserStore"
-import { useNavigate } from "react-router-dom"
-import { userInfo } from "os"
-import { resolve } from "path"
 export {
     getCityList, getHotelList, getDistrictList, getHotelDetailById, postRegister,
-    getEmailCode, checkLogin, getUserInfo, changeUserInfo, getRoomRestNum,postOrderItem
+    getEmailCode, checkLogin, getUserInfo, changeUserInfo, getRoomRestNum, postOrderItem,
+    getUserOrder,cancelOrder
 }
 
 
@@ -50,22 +48,22 @@ function getHotelDetailById(hotelId: number): void {
 }
 
 //查看房间剩余量
-function getRoomRestNum(roomId: number,reserveNum:number[][]) {
+function getRoomRestNum(roomId: number, reserveNum: number[][]) {
     return new Promise((resolve, reject) => {
         axios.get(`/api/restroom/selectRoom?roomId=${roomId}&month=${reserveNum[0][0]}
         &date=${reserveNum[0][1]}`).then(res0 => {
             let result = res0.data.data
             //考虑第二个请求
-            if(reserveNum[1][0]){
+            if (reserveNum[1][0]) {
                 axios.get(`/api/restroom/selectRoom?roomId=${roomId}&month=${reserveNum[1][0]}
-                &date=${reserveNum[1][1]}`).then(res1 =>{
-                    if(res1.data.data < result){
+                &date=${reserveNum[1][1]}`).then(res1 => {
+                    if (res1.data.data < result) {
                         result = res1.data.data
                     }
                     resolve(result)
                 }).catch(err => console.log(err))
             }
-            else{
+            else {
                 resolve(result)
             }
         }).catch(err => console.log(err))
@@ -73,9 +71,8 @@ function getRoomRestNum(roomId: number,reserveNum:number[][]) {
 }
 
 //发送订单请求
-function postOrderItem(order:Iorder){
-    axios.post('/api/alipay',{...order}).then((res)=>{
-        console.log(res.data)
+function postOrderItem(order: Iorder) {
+    axios.post('/api/alipay', { ...order }).then((res) => {
         const page = document.getElementById('payPage')!
         page.innerHTML = res.data
         page.getElementsByTagName('form')[0].submit()
@@ -84,19 +81,23 @@ function postOrderItem(order:Iorder){
 
 //发送注册信息
 function postRegister(info: IregisterInfo) {
-    axios.post('api/user/register', { ...info }).then((res) => {
-        switch (res.data.data) {
-            case 0:
-                alert('注册成功')
-                break
-            case 1:
-                alert('此身份证号已被注册')
-                break
-            case 2:
-                alert('此邮箱已被注册')
-                break
-        }
-    }).catch(err => console.log(err))
+    return new Promise((resolve, reject) => {
+        axios.post('api/user/register', { ...info }).then((res) => {
+            switch (res.data.data) {
+                case 0:
+                    alert('注册成功')
+                    resolve(res.data.data)
+                    break
+                case 1:
+                    alert('此身份证号已被注册')
+                    break
+                case 2:
+                    alert('此邮箱已被注册')
+                    break
+            }
+        }).catch(err => console.log(err))
+    })
+
 }
 
 //发送验证码
@@ -118,6 +119,7 @@ function checkLogin(emailAddress: string, code: string) {
         axios.post('/api/login/checkEmailCode', { emailAddress, code }).then((res) => {
             if (!res.data.data) {
                 reject()
+                return
             }
             const id: number = res.data.data
             //改变id
@@ -155,4 +157,24 @@ function changeUserInfo(name: string, phone: string) {
         userStore.changeUserInfo({ ...res.data.data, useId: userStore.userInfo.useId })
         alert('更改成功')
     }).catch(err => console.log(err))
+}
+
+//根据id得到订单信息
+function getUserOrder() {
+    axios.get(`/api/ordar/getOrderForUsers?useId=${userStore.userInfo.useId}`).then(res=>{
+        userStore.changeUserOrderList(res.data.data)
+    }).catch(err => console.log(err))
+}
+
+//根据id退单
+function cancelOrder(id:number){
+    return new Promise((resolve,reject)=>{
+        axios.get(`/api/return?id=${id}`).then((res)=>{
+            if(res.data.data == 1){
+                resolve(res.data)
+                return
+            }
+            reject()
+        }).catch(err=>console.log(err))
+    })
 }

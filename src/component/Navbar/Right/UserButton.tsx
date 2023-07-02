@@ -16,6 +16,7 @@ const UserButton = () => {
           navigate('/center/userinfo')
           break;
         case '2':
+          navigate('/center/userorder')
           break;
         case '3':
           userStore.exitLogin()

@@ -32,8 +32,6 @@ const Order = () => {
     price:(room.price + breakfast.price)*hotelStore.roomNum,
   }
 
-  console.log(orderItem)
-
 
   orderItem.price = parseFloat(Number(orderItem.price*(dayjs(orderItem.checkout).
   diff(orderItem.checkin,'day'))).toFixed(2))

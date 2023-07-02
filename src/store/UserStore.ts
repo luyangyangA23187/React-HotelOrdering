@@ -1,6 +1,7 @@
-import { makeAutoObservable,configure } from 'mobx'
+import { makeAutoObservable } from 'mobx'
 import { createContext, useId } from 'react'
-import { Ilogin, IregisterInfo, IuserInfo } from '../config/interface'
+import { IOrderShow, Ilogin, IregisterInfo, IuserInfo } from '../config/interface'
+import { getUserInfo } from '../config/GetData'
 
 class UserStore{
     constructor(){
@@ -34,6 +35,9 @@ class UserStore{
         sexual:'',
         uid:'',
     }
+
+    //用户订单列表
+    useOrderList:IOrderShow[] = []
 
     //改变注册信息-姓名
     changeRegisterInfoName(name:string){
@@ -69,9 +73,21 @@ class UserStore{
         this.userInfo.useId = id
         sessionStorage.setItem('useId',id+'')
     }
+    //检查是否已经登录
+    checkLogin(){
+        if(sessionStorage.getItem('useId')){
+            this.isLogin = true
+            this.userInfo.useId = parseInt(sessionStorage.getItem('useId')!)
+            getUserInfo()
+        }
+    }
     //改变用户信息
     changeUserInfo(userInfo:IuserInfo){
         this.userInfo = userInfo
+    }
+    //改变订单列表
+    changeUserOrderList(list:IOrderShow[]){
+        this.useOrderList = list
     }
     //退出登录
     exitLogin(){

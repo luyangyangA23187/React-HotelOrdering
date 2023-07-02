@@ -39,7 +39,7 @@ const RoomCard:React.FC<{room:Iroom,breakfastList:Ibreakfast[]}> = (props) => {
 
     //验证是否可以预订
     function canReserve(index:number):boolean{
-        if(roomNum<=0) return false
+        if(roomNum<hotelStore.roomNum) return false
         return hasBreakFast(index)
     }
 

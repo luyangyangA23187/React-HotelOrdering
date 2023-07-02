@@ -9,6 +9,7 @@ import Order from '../views/Order'
 import userStore from '../store/UserStore'
 import { message } from 'antd'
 import UserInfo from '../views/UserInfo'
+import UserOrder from '../views/UserOrder'
 
 interface Irouter{
     path:string,
@@ -29,7 +30,7 @@ const IndexRouter = () => {
         },
         {
             path:'/hotels/details/:id/:rooId/:breId/order',
-            element:<Auth><Order></Order></Auth>
+            element:<Auth><Order></Order></Auth>//订单页面
         },
         {
             path:'/login',
@@ -41,7 +42,11 @@ const IndexRouter = () => {
         },
         {
             path:'/center/userinfo',
-            element:<Auth><UserInfo></UserInfo></Auth>
+            element:<Auth><UserInfo></UserInfo></Auth>//用户个人信息页面
+        },
+        {
+            path:'/center/userorder',
+            element:<Auth><UserOrder></UserOrder></Auth>//用户订单页面
         },
         {
             path:'*',

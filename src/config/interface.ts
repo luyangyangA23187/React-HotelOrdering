@@ -1,5 +1,5 @@
 export type {Icity,Ihotel,Idistrict,IregisterInfo,
-    Iroom,Iorder,Ilogin,IuserInfo,Ibreakfast}
+    Iroom,Iorder,Ilogin,IuserInfo,Ibreakfast,IOrderShow}
 
 //城市信息
 interface Icity{
@@ -88,4 +88,17 @@ interface Iorder{
     checkin:string,
     checkout:string,
     preserveNum?:number,
+}
+
+//订单展示信息
+interface IOrderShow{
+    id:number,
+    breakfastName:string,
+    checkin:string,
+    checkout:string,
+    hotelName:string,
+    roomName:string,
+    roomNum:string,
+    price:number,
+    state:string,
 }
