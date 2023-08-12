@@ -28,7 +28,6 @@ class UserStore{
 
     //用户信息
     userInfo:IuserInfo = {
-        useId:0,
         email:'',
         name:'',
         phone:'',
@@ -70,14 +69,12 @@ class UserStore{
     //改变用户信息-id
     changeUserId(id:number){
         this.isLogin = true
-        this.userInfo.useId = id
         sessionStorage.setItem('useId',id+'')
     }
     //检查是否已经登录
     checkLogin(){
-        if(sessionStorage.getItem('useId')){
-            this.isLogin = true
-            this.userInfo.useId = parseInt(sessionStorage.getItem('useId')!)
+        if(localStorage.getItem('token')){
+            //发送得到用户信息的请求以此来确认是否登录
             getUserInfo()
         }
     }
@@ -89,12 +86,19 @@ class UserStore{
     changeUserOrderList(list:IOrderShow[]){
         this.useOrderList = list
     }
+    //成功登录
+    successLogin(token:string){
+        //登录状态为真
+        if(!this.isLogin) this.isLogin = true
+        //设置token
+        localStorage.setItem('token',token)
+    }
     //退出登录
     exitLogin(){
         //登录状态为假
         this.isLogin = false
-        //清空session
-        sessionStorage.removeItem('useId')
+        //清空token
+        localStorage.removeItem('token')
         //清空登录信息
         this.loginInfo.emailAddress = ''
         this.loginInfo.code = ''

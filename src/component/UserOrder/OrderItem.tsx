@@ -33,8 +33,6 @@ const OrderItem = () => {
         })
     })
 
-    data.reverse()
-
     const cancel = (res:any)=>{
         if(res.state != "预订"){
             return (<div key={res.id}></div>)

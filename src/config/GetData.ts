@@ -1,7 +1,8 @@
 import { Iorder, IregisterInfo } from "./interface"
-import axios from "axios"
+import axios from "./axios"
 import hotelStore from "../store/HotelListStore"
 import userStore from "../store/UserStore"
+import { resolve } from "path"
 export {
     getCityList, getHotelList, getDistrictList, getHotelDetailById, postRegister,
     getEmailCode, checkLogin, getUserInfo, changeUserInfo, getRoomRestNum, postOrderItem,
@@ -38,11 +39,11 @@ function getDistrictList(cityId: number): void {
 //根据酒店ID请求酒店详细信息
 function getHotelDetailById(hotelId: number): void {
     //发送房间请求
-    axios.get(`/api/room/getRoom?hotelId=${hotelId}`).then((res) => {
+    axios.get(`/api/hotel/getRoom?hotelId=${hotelId}`).then((res) => {
         hotelStore.changeRoomList(res.data.data)
     }).catch(err => console.log(err))
     //发送早餐请求
-    axios.get(`/api/breakfast/getBreakfast?hotId=${hotelId}`).then((res) => {
+    axios.get(`/api/hotel/getBreakfast?hotId=${hotelId}`).then((res) => {
         hotelStore.changeBreakfastList(res.data.data)
     }).catch(err => console.log(err))
 }
@@ -50,13 +51,13 @@ function getHotelDetailById(hotelId: number): void {
 //查看房间剩余量
 function getRoomRestNum(roomId: number, reserveNum: number[][]) {
     return new Promise((resolve, reject) => {
-        axios.get(`/api/restroom/selectRoom?roomId=${roomId}&month=${reserveNum[0][0]}
-        &date=${reserveNum[0][1]}`).then(res0 => {
+        axios.get(`/api/hotel/selectRoom?roomId=${roomId}&month=${reserveNum[0][0]}&date=${reserveNum[0][1]}`)
+        .then(res0 => {
             let result = res0.data.data
             //考虑第二个请求
             if (reserveNum[1][0]) {
-                axios.get(`/api/restroom/selectRoom?roomId=${roomId}&month=${reserveNum[1][0]}
-                &date=${reserveNum[1][1]}`).then(res1 => {
+                axios.get(`/api/hotel/selectRoom?roomId=${roomId}&month=${reserveNum[1][0]}&date=${reserveNum[1][1]}`)
+                .then(res1 => {
                     if (res1.data.data < result) {
                         result = res1.data.data
                     }
@@ -72,9 +73,9 @@ function getRoomRestNum(roomId: number, reserveNum: number[][]) {
 
 //发送订单请求
 function postOrderItem(order: Iorder) {
-    axios.post('/api/alipay', { ...order }).then((res) => {
+    axios.post('/api/ordar/postOrder', { ...order }).then((res) => {
         const page = document.getElementById('payPage')!
-        page.innerHTML = res.data
+        page.innerHTML = res.data.data
         page.getElementsByTagName('form')[0].submit()
     }).catch(err => console.log(err))
 }
@@ -82,7 +83,7 @@ function postOrderItem(order: Iorder) {
 //发送注册信息
 function postRegister(info: IregisterInfo) {
     return new Promise((resolve, reject) => {
-        axios.post('api/user/register', { ...info }).then((res) => {
+        axios.post('api/login/register', { ...info }).then((res) => {
             switch (res.data.data) {
                 case 0:
                     alert('注册成功')
@@ -121,9 +122,6 @@ function checkLogin(emailAddress: string, code: string) {
                 reject()
                 return
             }
-            const id: number = res.data.data
-            //改变id
-            userStore.changeUserId(id)
             //得到用户信息
             getUserInfo()
             resolve(res.data.data)
@@ -133,15 +131,15 @@ function checkLogin(emailAddress: string, code: string) {
 
 //根据id得到用户信息
 function getUserInfo() {
-    const id: number = userStore.userInfo.useId
-    //如果用户id为空则不发送
-    if (!id) {
+    //如果token不存在则不发送
+    if (!localStorage.getItem('token')) {
         alert('尚未登录')
         return
     }
     //发送请求
-    axios.post('/api/user/getUser', { id: id }).then((res) => {
-        userStore.changeUserInfo({ ...res.data.data, useId: id })
+    axios.get('/api/user/getUser').then((res) => {
+        if(!res) return
+        userStore.changeUserInfo({...res.data.data})
     }).catch(err => console.log(err))
 }
 
@@ -153,15 +151,16 @@ function changeUserInfo(name: string, phone: string) {
     if (!phone) {
         alert('电话不能为空')
     }
-    axios.post('/api/user/updateUser', { id: userStore.userInfo.useId, name: name, phone: phone }).then((res) => {
-        userStore.changeUserInfo({ ...res.data.data, useId: userStore.userInfo.useId })
+    axios.post('/api/user/updateUser', { name: name, phone: phone }).then((res) => {
+        userStore.changeUserInfo({ ...res.data.data })
         alert('更改成功')
     }).catch(err => console.log(err))
 }
 
 //根据id得到订单信息
 function getUserOrder() {
-    axios.get(`/api/ordar/getOrderForUsers?useId=${userStore.userInfo.useId}`).then(res=>{
+    axios.get(`/api/ordar/getOrderForUsers`).then(res=>{
+        if(!res) return
         userStore.changeUserOrderList(res.data.data)
     }).catch(err => console.log(err))
 }
@@ -169,8 +168,8 @@ function getUserOrder() {
 //根据id退单
 function cancelOrder(id:number){
     return new Promise((resolve,reject)=>{
-        axios.get(`/api/return?id=${id}`).then((res)=>{
-            if(res.data.data == 1){
+        axios.post(`/api/ordar/refund`,{orderId:id}).then((res)=>{
+            if(res.data.data === 1){
                 resolve(res.data)
                 return
             }

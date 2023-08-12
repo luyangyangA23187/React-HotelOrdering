@@ -69,7 +69,6 @@ interface Ilogin{
 
 //用户信息
 interface IuserInfo{
-    useId:number,
     email:string,
     name:string,
     phone:string,

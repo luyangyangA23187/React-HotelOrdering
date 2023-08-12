@@ -11,6 +11,7 @@ import userStore from './store/UserStore';
 
 function App() {
 
+  //发一个请求试试有没有登录
   userStore.checkLogin()
 
   return (

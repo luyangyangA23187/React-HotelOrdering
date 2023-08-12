@@ -1,9 +1,10 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import style from './LoginBar.module.css'
 import { Button, Input, Space } from 'antd';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Store } from '../../store/StoreProvider';
 import { checkLogin, getEmailCode } from '../../config/GetData';
+import SendButton from './SendButton';
 
 const LoginBar = () => {
 
@@ -12,8 +13,6 @@ const LoginBar = () => {
 
   //用于跳转到注册页面或首页
   const navigate = useNavigate()
-  //用于检查当前网页
-  const location = useLocation()
 
   if(userStore.isLogin){
     navigate(-1)
@@ -29,15 +28,7 @@ const LoginBar = () => {
         <Space.Compact size={'large'}>
           <Input placeholder='请输入邮箱'
           onChange={(e)=>{userStore.changeLoginEmail(e.target.value)}}></Input>
-          <Button onClick={()=>{
-            const email:string = userStore.loginInfo.emailAddress
-            if(!email){
-              alert('邮箱为空')
-              return
-            }
-            //发送邮件验证请求
-            getEmailCode(email)
-          }}>发送验证码</Button>
+          <SendButton></SendButton>
         </Space.Compact>
       </div>
       <div className={style.password}>

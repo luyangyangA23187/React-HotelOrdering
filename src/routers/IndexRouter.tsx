@@ -1,7 +1,6 @@
 import React, { Children, ReactNode } from 'react'
 import HotelList from '../views/HotelList'
 import { useRoutes,Navigate } from 'react-router-dom'
-import UserCenter from '../views/Login'
 import Login from '../views/Login'
 import Register from '../views/Register'
 import HotelDetail from '../views/HotelDetail'
@@ -22,31 +21,31 @@ const IndexRouter = () => {
     const routerArray:Irouter[] = [
         {
             path:'/hotels',
-            element:<HotelList></HotelList>,//酒店列表
+            element:lazyLoad('HotelList'),//酒店列表
         },
         {
             path:'/hotels/details/:id',
-            element:<HotelDetail></HotelDetail>//酒店详情
+            element:lazyLoad('HotelDetail')//酒店详情
         },
         {
             path:'/hotels/details/:id/:rooId/:breId/order',
-            element:<Auth><Order></Order></Auth>//订单页面
+            element:<Auth>{lazyLoad('Order')}</Auth>//订单页面
         },
         {
             path:'/login',
-            element:<Login></Login>//登录页面
+            element:lazyLoad('Login')//登录页面
         },
         {
             path:'/register',
-            element:<Register></Register>//注册页面
+            element:lazyLoad('Register')//注册页面
         },
         {
             path:'/center/userinfo',
-            element:<Auth><UserInfo></UserInfo></Auth>//用户个人信息页面
+            element:<Auth>{lazyLoad('UserInfo')}</Auth>//用户个人信息页面
         },
         {
             path:'/center/userorder',
-            element:<Auth><UserOrder></UserOrder></Auth>//用户订单页面
+            element:<Auth>{lazyLoad('UserOrder')}</Auth>//用户订单页面
         },
         {
             path:'*',
@@ -75,6 +74,14 @@ const Auth:React.FC<{children:ReactNode|ReactNode[]}> = (props)=>{
             {props.children}
         </div>
     )
+}
+
+//路由懒加载
+const lazyLoad = (path:string)=>{
+    const Comp = React.lazy(()=>import(`../views/${path}`))
+    return <React.Suspense>
+        <Comp></Comp>
+    </React.Suspense>
 }
 
 export default IndexRouter

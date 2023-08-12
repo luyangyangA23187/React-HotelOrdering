@@ -272,7 +272,7 @@ class HotelListStore {
             temp[0][1] = parseInt(timeBin, 2)
             //持续时间-离店月
             timeBin = ''
-            for (let i = 0; i < this.date_1.day; i++) {
+            for (let i = 0; i < this.date_1.day-1; i++) {
                 timeBin = `1${timeBin}`
             }
             temp[1][1] = parseInt(timeBin, 2)
