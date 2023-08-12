@@ -17,7 +17,7 @@ const ListItem:React.FC<Iprops> = (props) => {
         <Row gutter={8}>
             <Col span={8}>
             <div className={style.common}>
-                <img src={props.hotel.picture} alt="" />
+                <img src='' data-src={props.hotel.picture} alt="" />
             </div>
             </Col>
             <Col span={10}>
